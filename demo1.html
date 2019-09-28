@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .border-gray{border:1px solid red}
+        #demo{width: 700px;margin: 0 auto;}
+        div{}
+        ul{width:300px}
+        ul li{list-style-type:none;background:#F8F8FF;margin-top:10px;}
+        ul li img{vertical-align:middle;}
+        p{display:inline;margin-left:5px}
+    </style>
+</head>
+<body>
+<div id="demo">
+    <div  style="float:left;" >
+        <img :src="img" width="300" height="300">
+    </div>
+    <div style="float:left;">
+        <ul>
+
+            <span>颜色选择</span>
+            <li  v-for="(item,index) in ary" :key="index" @click="doClick(index)" :class="{'border-gray':current==index}">
+                <img :src="item.url" width="50" height="50"><p v-html="item.name"></p>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<script>
+    new Vue({
+        el:'#demo',
+        data(){
+            return{
+                ary:[
+                    {url:'https://img.alicdn.com/imgextra/i1/1854881575/O1CN01t63hCD1NVOKD6STdq_!!1854881575.jpg_430x430q90.jpg',name:'<span style="font-size:12px">蓝色【三挡强劲风力-升级静音版】带底座</span>'},
+                    {url:'https://img.alicdn.com/imgextra/i3/1854881575/O1CN01Syx3lz1NVOK81gb0J_!!1854881575.jpg_430x430q90.jpg',name:'<span style="font-size:12px">粉色【三挡强劲风力-升级静音版】带底座</span>'},
+                    {url:'https://img.alicdn.com/imgextra/i3/1854881575/O1CN01RHZO3a1NVOKALDPZn_!!1854881575.jpg_430x430q90.jpg',name:'<span style="font-size:12px">白色【三挡强劲风力-升级静音版】带底座</span>'}
+
+                ],
+                current:0,
+                img:'https://img.alicdn.com/imgextra/i1/1854881575/O1CN01t63hCD1NVOKD6STdq_!!1854881575.jpg_430x430q90.jpg'
+            }
+        },
+        methods:{
+            doClick(index){
+                this.current=index;
+                this.img=this.ary[index].url;
+            }
+        }
+    })
+</script>
+</body>
+</html>

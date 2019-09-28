@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+    *{margin:0;padding:0}
+    div{width:700px;margin:0 auto}
+    td{height: 40px}
+</style>
+<body>
+<div id="demo">
+    <table border="1px" cellpadding="0" cellspacing="0" width="600" >
+        <tr style="text-align: center">
+            <td><input type="checkbox" @click="checkAll()" v-model="isAllChecked"></td>
+            <td>商品序号</td>
+            <td>商品编号</td>
+            <td>商品名称</td>
+            <td>商品数量</td>
+            <td>商品单价</td>
+            <td>移除</td>
+        </tr>
+        <tr v-for="(item,index) in ary" style="text-align: center">
+            <td><input type="checkbox" v-model="item.isCheck" :value="index+1" @click="checkOne(index)"></td>
+            <td>{{index+1}}</td>
+            <td>{{item.bid}}</td>
+            <td>{{item.name}}</td>
+            <td>
+                <input type="button" @click="subClick(index)" value="-" style="width: 15px;">
+                <input type="text"  v-model="item.num" style="width: 15px;">
+                <input type="button" @click="addClick(index)" value="+" style="width: 15px;">
+            </td>
+            <td>{{item.price}}</td>
+            <td ><input type="button" value="删除" @click="delClick(index)"></td>
+        </tr>
+        <tr><td colspan="7" >总价为：{{sumAmount}}</td></tr>
+    </table>
+</div>
+<script>
+    new Vue({
+        el:'#demo',
+        data(){
+            return{
+                ary:[
+                    {bid:'0001',name:'iphoneX',num:1,price:6188,isCheck:false},
+                    {bid:'0002',name:'华为p30',num:3,price:5934,isCheck:false},
+                    {bid:'0003',name:'红米not8pro',num:2,price:1799,isCheck:false},
+                    {bid:'0004',name:'iphone11',num:5,price:5012,isCheck:false}
+                ],
+                isAllChecked: false,
+                checkAllList: []
+            }
+        },
+        methods:{
+            subClick(index){    /*减少数量*/
+                if(this.ary[index].num>1){
+                    this.ary[index].num--;
+                }else {
+                    this.ary[index].num=1;
+                }
+            },
+            addClick(index){    /*增加数量*/
+                this.ary[index].num++;
+            },
+            delClick(index){    /*删除*/
+                this.ary.splice(index,1);
+            },
+            checkOne(index){ /*单选*/
+                if (this.ary[index].isCheck === false) {
+                    this.ary[index].isCheck = true;
+                } else {
+                    this.ary[index].isCheck = false;
+                    this.isAllChecked = false;
+                }
+            },
+            checkAll(item){ /*全选*/
+                if (this.isAllChecked === false) {
+                    for (var i = 0; i < this.ary.length; i++) {
+                        var item = this.ary[i];
+                        item.isCheck = true;
+                    }
+                } else {
+                    for (var i = 0; i < this.ary.length; i++) {
+                        var item = this.ary[i];
+                        item.isCheck = false;
+                    }
+                }
+                this.isAllChecked = !this.isAllChecked;
+            }
+        },
+        computed:{
+            sumAmount(){    /*总金额  数量*单价..*/
+                var total = 0;
+                for (var i = 0; i < this.ary.length; i++) {
+                    if (this.ary[i].isCheck) {
+                        var item = this.ary[i];
+                        total += item.price * item.num;
+                    }
+                }
+                return total;
+            }
+        }
+    })
+</script>
+</body>
+</html>

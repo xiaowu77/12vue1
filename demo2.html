@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+    *{margin:0;padding:0}
+    div{width:700px;margin:0 auto}
+    td{height: 40px}
+
+</style>
+<body>
+<div id="demo">
+    <table border="1px" cellpadding="0" cellspacing="0" width="600" >
+        <tr style="text-align: center">
+            <td>商品序号</td>
+            <td>商品编号</td>
+            <td>商品名称</td>
+            <td>商品数量</td>
+            <td>商品单价</td>
+            <td>移除</td>
+        </tr>
+        <tr v-for="(item,index) in ary" style="text-align: center">
+            <td>{{index+1}}</td>
+            <td>{{item.bid}}</td>
+            <td>{{item.name}}</td>
+            <td>
+                <input type="button" @click="subClick(index)" value="-" style="width: 15px;">
+                <input type="text"  v-model="item.num" style="width: 15px;">
+                <input type="button" @click="addClick(index)" value="+" style="width: 15px;">
+            </td>
+            <td>{{item.price}}</td>
+            <td ><input type="button" value="删除" @click="delClick(index)"></td>
+        </tr>
+        <tr><td colspan="6" >总价为：{{sumAmount}}</td></tr>
+    </table>
+</div>
+<script>
+    new Vue({
+        el:'#demo',
+        data(){
+            return{
+                ary:[
+                    {bid:'0001',name:'iphoneX',num:1,price:6188},
+                    {bid:'0002',name:'华为p30',num:3,price:5934},
+                    {bid:'0003',name:'红米not8pro',num:2,price:1799},
+                    {bid:'0004',name:'iphone11',num:5,price:5012}
+                    ],
+                a:[]
+            }
+        },
+        methods:{
+            subClick(index){
+                if(this.ary[index].num>1){
+                    this.ary[index].num--;
+                }else {
+                    this.ary[index].num=1;
+                }
+
+            },
+            addClick(index){
+                this.ary[index].num++;
+            },
+            delClick(index){
+                console.log(index);
+                this.ary.splice(index,1);
+            }
+        },
+        computed:{
+            sumAmount(){
+                return this.ary.map(
+                    row=>row.price*row.num).reduce(
+                    (acc, cur) => (parseInt(cur) + acc), 0)
+            }
+        }
+    })
+</script>
+</body>
+</html>
